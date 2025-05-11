@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://your-api-url.com/api'; // Replace with your actual API URL
+const API_URL = 'http://localhost:4000/auth/login'; // Replace with your actual API URL
 
 export const login = async (usernameOrEmail: string, password: string): Promise<boolean> => {
     try {
