@@ -26,9 +26,9 @@ const GroupModel = {
     try {
       const [result] = await db.query(
         `INSERT INTO groups (name, created_by) VALUES (?, ?)`,
-        [group.name, group.created_by]
+        [group.name, group.userId]
       );
-      await logAction('INSERT', 'groups', result.insertId, group.created_by);
+      await logAction('INSERT', 'groups', result.insertId, group.userId);
       return result;
     } catch (error) {
       console.error('Erro ao inserir grupo:', error);
@@ -40,9 +40,9 @@ const GroupModel = {
     try {
       const [result] = await db.query(
         `UPDATE groups SET name = ?, updated_by = ?, updated_at = NOW() WHERE id = ?`,
-        [group.name, group.updated_by, id]
+        [group.name, group.userId, id]
       );
-      await logAction('UPDATE', 'groups', id, group.updated_by);
+      await logAction('UPDATE', 'groups', id, group.userId);
       return result;
     } catch (error) {
       console.error('Erro ao atualizar grupo:', error);
@@ -50,13 +50,13 @@ const GroupModel = {
     }
   },
 
-  async softDelete(id, deleted_by) {
+  async softDelete(id, userId) {
     try {
       const [result] = await db.query(
         `UPDATE groups SET deleted_at = NOW(), deleted_by = ? WHERE id = ?`,
-        [deleted_by, id]
+        [userId, id]
       );
-      await logAction('DELETE', 'groups', id, deleted_by);
+      await logAction('DELETE', 'groups', id, userId);
       return result;
     } catch (error) {
       console.error('Erro ao deletar grupo:', error);

@@ -26,9 +26,9 @@ const MenuModel = {
     try {
       const [result] = await db.query(
         `INSERT INTO menus (name, parent_id, route, created_by) VALUES (?, ?, ?, ?)`,
-        [menu.name, menu.parent_id || null, menu.route, menu.created_by]
+        [menu.name, menu.parent_id || null, menu.route, menu.userId]
       );
-      await logAction('INSERT', 'menus', result.insertId, menu.created_by);
+      await logAction('INSERT', 'menus', result.insertId, menu.userId);
       return result;
     } catch (error) {
       console.error('Erro ao inserir menu:', error);
@@ -40,9 +40,9 @@ const MenuModel = {
     try {
       const [result] = await db.query(
         `UPDATE menus SET name = ?, parent_id = ?, route = ?, updated_by = ?, updated_at = NOW() WHERE id = ?`,
-        [menu.name, menu.parent_id || null, menu.route, menu.updated_by, id]
+        [menu.name, menu.parent_id || null, menu.route, menu.userId, id]
       );
-      await logAction('UPDATE', 'menus', id, menu.updated_by);
+      await logAction('UPDATE', 'menus', id, menu.userId);
       return result;
     } catch (error) {
       console.error('Erro ao atualizar menu:', error);
@@ -50,13 +50,13 @@ const MenuModel = {
     }
   },
 
-  async softDelete(id, deleted_by) {
+  async softDelete(id, userId) {
     try {
       const [result] = await db.query(
         `UPDATE menus SET deleted_at = NOW(), deleted_by = ? WHERE id = ?`,
-        [deleted_by, id]
+        [userId, id]
       );
-      await logAction('DELETE', 'menus', id, deleted_by);
+      await logAction('DELETE', 'menus', id, userId);
       return result;
     } catch (error) {
       console.error('Erro ao deletar menu:', error);

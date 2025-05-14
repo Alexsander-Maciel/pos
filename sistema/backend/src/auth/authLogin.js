@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userModel = require('../models/administrativo/user/userModel');
+const userModel = require('../models/login/loginModel');
 const tokenModel = require('../models/login/tokenModel');
 require('dotenv').config();
 
